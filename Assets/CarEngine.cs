@@ -32,6 +32,7 @@ public class CarEngine : MonoBehaviour
     public Rigidbody[] wheels;
 
     public Text speedText;
+    public Text rpmText;
 
     public float maxAngularVel = 40f;
     public float wheelTorque = 50f;
@@ -64,24 +65,28 @@ public class CarEngine : MonoBehaviour
     void Update()
     {
 
-        //foreach (Rigidbody rb in wheels)
-        //{
-        //    if (maxAngularVel != rb.maxAngularVelocity)
-        //        rb.maxAngularVelocity = maxAngularVel;
-        //}
-
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= refreshRate)
         {
+            // Speed
+
             timeElapsed = 0f;
             Vector2 lateralSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
         
             float conversion = (metric == Metric.KPH ? 3.6f : 2.236f);
             string speed = (lateralSpeed.magnitude * conversion).ToString("F1");
-            //string speed_mph = (lateralSpeed.magnitude * 2.236f).ToString("F1");
-        
         
             speedText.text = "Speed: " + /*lateralSpeed.magnitude.ToString("F1") */ speed + (metric == Metric.KPH ? " km/h" : " mph");
+
+            // RPM
+
+            wheel1_rpm = wheel_front_left.GetComponent<WheelCollider>().rpm;
+            wheel2_rpm = wheel_front_right.GetComponent<WheelCollider>().rpm;
+            wheel3_rpm = wheel_back_left.GetComponent<WheelCollider>().rpm;
+            wheel4_rpm = wheel_back_right.GetComponent<WheelCollider>().rpm;
+            avg_rpm = (((wheel1_rpm + wheel2_rpm + wheel3_rpm + wheel4_rpm) / 4f) * 10f) + 437f;
+
+            rpmText.text = "Engine: " + avg_rpm.ToString("F1") + " RPM";
         }
 
 
@@ -89,32 +94,7 @@ public class CarEngine : MonoBehaviour
         //
         horiz = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        //
-        //Vector3 moveBy = new Vector3(horiz, 0f, vertical).normalized;
-        //
-        //float target = Mathf.Atan2(horiz, 0f) * Mathf.Rad2Deg /*+ cam.eulerAngles.y*/;
-        ////target = Mathf.Clamp(target, -5f + cam.eulerAngles.y, +5 + cam.eulerAngles.y);
-        //
-        //float steering = (horiz * 30f);
-        //wheel_front_left.transform.rotation  = Quaternion.Euler(wheel_front_left.transform.rotation.eulerAngles.x , steering, wheel_front_left.transform.rotation.eulerAngles.z );
-        //wheel_front_right.transform.rotation = Quaternion.Euler(wheel_front_right.transform.rotation.eulerAngles.x, steering, wheel_front_right.transform.rotation.eulerAngles.z);
-        //
-        ////transform.rotation = Quaternion.Euler(0f, target, 0f);
-        //Vector3 moveDir = Quaternion.Euler(0f, target, 0f) * moveBy;
-        //
-        ////Vector3 force = new Vector3(transform.rotation.eulerAngles.x, 0f, transform.rotation.eulerAngles.z) * 40f;
-        //realVert = Mathf.Lerp(realVert, vertical, Time.deltaTime * 0.3f);
-        //
-        //force = transform.right * vertical * wheelForce;
 
-
-
-
-        ////controller.SimpleMove(moveDir * speed);
-        //foreach (Rigidbody rb in wheels)
-        //{
-        //    rb.AddTorque(force, ForceMode.Acceleration);
-        //}
         Vector3 position1;
         Quaternion rot1;
         wheel_front_left.GetComponent<WheelCollider>().GetWorldPose(out position1, out rot1);
@@ -123,11 +103,30 @@ public class CarEngine : MonoBehaviour
         Quaternion rot2;
         wheel_front_right.GetComponent<WheelCollider>().GetWorldPose(out position2, out rot2);
 
+        Vector3 position3;
+        Quaternion rot3;
+        wheel_back_left.GetComponent<WheelCollider>().GetWorldPose(out position3, out rot3);
+
+        Vector3 position4;
+        Quaternion rot4;
+        wheel_back_right.GetComponent<WheelCollider>().GetWorldPose(out position4, out rot4);
+
+
 
         wheel_front_left.transform.rotation = rot1;
         wheel_front_right.transform.rotation = rot2;
+        wheel_back_left.transform.rotation = rot3;
+        wheel_back_right.transform.rotation = rot4;
+
+
 
     }
+    private float wheel1_rpm = 0f;
+    private float wheel2_rpm = 0f;
+    private float wheel3_rpm = 0f;
+    private float wheel4_rpm = 0f;
+    private float avg_rpm = 0f;
+
     void FixedUpdate()
     {
         wheel_front_left.GetComponent<WheelCollider>().motorTorque = wheelTorque * vertical;
@@ -137,6 +136,8 @@ public class CarEngine : MonoBehaviour
 
         wheel_front_left.GetComponent<WheelCollider>().steerAngle = horiz * steering;
         wheel_front_right.GetComponent<WheelCollider>().steerAngle = horiz * steering;
+
+        
 
 
     }
