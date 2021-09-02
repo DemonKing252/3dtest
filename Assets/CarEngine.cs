@@ -60,10 +60,24 @@ public class CarEngine : MonoBehaviour
 
     private float vertical;
     private float horiz;
+    public float _lateralSpeed;
 
-    // Update is called once per frame
+    // Update is called once per framef
+    float conversion;
+    public void OnThrottleChanged(float val)
+    {
+        //vertical = val;
+    }
     void Update()
     {
+
+        wheel1_rpm = wheel_front_left.GetComponent<WheelCollider>().rpm;
+        //avg_rpm = ((wheel1_rpm));// * 11f) + 737f;
+
+
+        _lateralSpeed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude * conversion;
+
+        avg_rpm = (new Vector2(rb.velocity.x, rb.velocity.z).magnitude * 242f) + 737f;
 
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= refreshRate)
@@ -73,22 +87,16 @@ public class CarEngine : MonoBehaviour
             timeElapsed = 0f;
             Vector2 lateralSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
         
-            float conversion = (metric == Metric.KPH ? 3.6f : 2.236f);
+            conversion = (metric == Metric.KPH ? 3.6f : 2.236f);
             string speed = (lateralSpeed.magnitude * conversion).ToString("F1");
+            
         
             speedText.text = "Speed: " + /*lateralSpeed.magnitude.ToString("F1") */ speed + (metric == Metric.KPH ? " km/h" : " mph");
 
             // RPM
 
-            wheel1_rpm = wheel_front_left.GetComponent<WheelCollider>().rpm;
-            wheel2_rpm = wheel_front_right.GetComponent<WheelCollider>().rpm;
-            wheel3_rpm = wheel_back_left.GetComponent<WheelCollider>().rpm;
-            wheel4_rpm = wheel_back_right.GetComponent<WheelCollider>().rpm;
-            avg_rpm = (((wheel1_rpm + wheel2_rpm + wheel3_rpm + wheel4_rpm) / 4f) * 10f) + 437f;
-
             rpmText.text = "Engine: " + avg_rpm.ToString("F1") + " RPM";
         }
-
 
         //
         //
@@ -125,7 +133,7 @@ public class CarEngine : MonoBehaviour
     private float wheel2_rpm = 0f;
     private float wheel3_rpm = 0f;
     private float wheel4_rpm = 0f;
-    private float avg_rpm = 0f;
+    public float avg_rpm = 0f;
 
     void FixedUpdate()
     {
