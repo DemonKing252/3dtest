@@ -68,6 +68,8 @@ public class Speedometer : MonoBehaviour
         float max = lastLabelNum;// - (lastLabelNum / (float)numOfLabels);
         float speed = car.GetComponent<CarEngine>()._lateralSpeed;
         float angle = startAngle - ((endAngle - startAngle) * (speed / max));
+        //if (angle > (endAngle - startAngle) * max) angle = (endAngle - startAngle) * max;
+        //angle = Mathf.Clamp(angle, endAngle, startAngle);
 
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }

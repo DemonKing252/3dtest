@@ -55,6 +55,7 @@ public class Tachometer : MonoBehaviour
             //textPrefab.SetActive(false);
 
         }
+        currentAngle = startAngle;
         //text[0] = Instantiate(textPrefab, transform.position, Quaternion.identity);
         //text[0].transform.SetParent(renderCavas.transform);
         //text[0].transform.localScale = Vector3.one;
@@ -63,13 +64,18 @@ public class Tachometer : MonoBehaviour
 
     }
     float angle = 0f;
+    float currentAngle = 0f;
     // Update is called once per frame
     void Update()
     {
         float max = lastLabelNum;// - (lastLabelNum / (float)numOfLabels);
         float rpm = car.GetComponent<CarEngine>().avg_rpm;
-        float angle = startAngle - ((endAngle - startAngle) * (rpm / max));
+        //float angle = startAngle - ((endAngle - startAngle) * (rpm / max));
 
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        float targetAngle = startAngle - ((endAngle - startAngle) * (rpm / max));
+
+        currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * 7f);
+
+        transform.rotation = Quaternion.Euler(0f, 0f, currentAngle);
     }
 }
