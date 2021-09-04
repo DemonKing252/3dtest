@@ -87,6 +87,8 @@ public class CarEngine : MonoBehaviour
 
     // Update is called once per framef
     float conversion;
+    public AnimationCurve torqueCurve;
+    
     public void OnThrottleChanged(float val)
     {
         if (thro == Throttle.BySlider)
@@ -112,10 +114,11 @@ public class CarEngine : MonoBehaviour
 
 
         _lateralSpeed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude * conversion;
+        //avg_rpm = (new Vector2(rb.velocity.x, rb.velocity.z).magnitude * (gearSpeedMultiplier * gears[currentGear - 1].rpmMultiplier)) + 737f;
 
         avg_rpm = (new Vector2(rb.velocity.x, rb.velocity.z).magnitude * (gearSpeedMultiplier * gears[currentGear - 1].rpmMultiplier) ) + 737f;
 
-        
+
 
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= refreshRate)
