@@ -1699,8 +1699,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textPrefab: {fileID: 869115322}
   text: []
-  numOfLabels: 11
-  lastLabelNum: 220
+  numOfLabels: 12
+  lastLabelNum: 240
   startAngle: 30
   endAngle: 300
   origin: {fileID: 733871782}
@@ -3057,7 +3057,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.04373388, y: 0.11624855}
   m_AnchorMax: {x: 0.5, y: 0.216}
-  m_AnchoredPosition: {x: 436.2, y: -14.1}
+  m_AnchoredPosition: {x: 436.2, y: 7.899994}
   m_SizeDelta: {x: -232.88998, y: -5.5730667}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1079658148
@@ -3232,9 +3232,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b4277cfb8e6903a4fa909300c38846d0, type: 3}
-    m_FontSize: 15
-    m_FontStyle: 1
+    m_Font: {fileID: 12800000, guid: 9459a51a2132536449bb06d96bbef573, type: 3}
+    m_FontSize: 11
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
@@ -5605,7 +5605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.04373388, y: 0.11624855}
   m_AnchorMax: {x: 0.5, y: 0.216}
-  m_AnchoredPosition: {x: 418.2, y: 12.4}
+  m_AnchoredPosition: {x: 418.2, y: 34.4}
   m_SizeDelta: {x: -232.88998, y: 16.313456}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2117064760
